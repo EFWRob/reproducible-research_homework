@@ -1,6 +1,13 @@
 # Reproducible research: version control and R
 
-\# INSERT ANSWERS HERE #
+Question 4a.
+Both walks start in the same initial location, but instantly diverge and cover markedly different areas. This is because with every step, or increment, the following increment will be at a random angle between 0 and 2π to the preceding increment, and independent of that preceding increment. From this it follows that the path taken is non-continuous.
+
+Question 4b.
+A random seed is an initial value (any random number) that algorithms use to produce sequences of seemingly random numbers. These PSNG (pseudorandom number generators) algorithms produce the same string of numbers corresponding to each seed number. This is the result of trying to model randomness using deterministic machines (computers), but also ensures reproducibility as the same algorithm with the same seed will always produce the same randomness. 
+
+4d
+
 
 ## Instructions
 
