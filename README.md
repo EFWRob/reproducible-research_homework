@@ -7,7 +7,9 @@ Question 4b.
 A random seed is an initial value (any random number) that algorithms use to produce sequences of seemingly random numbers. These PSNG (pseudorandom number generators) algorithms produce the same string of numbers corresponding to each seed number. This is the result of trying to model randomness using deterministic machines (computers), but also ensures reproducibility as the same algorithm with the same seed will always produce the same randomness. 
 
 4d
+<img width="468" alt="Code_Changes" src="https://github.com/user-attachments/assets/9d5155fb-8814-4efc-9067-f7f088a51827" />
 
+5a
 
 ## Instructions
 
