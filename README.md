@@ -1,7 +1,11 @@
 # Reproducible research: version control and R
 
-\# INSERT ANSWERS HERE #
+Question 4:
+a) Both walks start at the origin but diverge almost instantly, and cover differently sized areas. This is because after each increment, it takes the next increment at a random angle between 0 and 2π relative to the previous increment, so each increments direction is independent of the previous increments direction. This leads to non-continuous motion i.e. a non-predictable path. 
 
+b) A random seed is an initial random number used by algorithms known as PRNG (pseudorandom number generators) to generate strings of "random" numbers deterministically and reproducibily. The seed works as a starting point meaning that if the same algorithm uses that number (seed) again, it generates the same string of "random" numbers. 
+
+c)
 ## Instructions
 
 The homework for this Computer skills practical is divided into 5 questions for a total of 100 points. First, fork this repo and make sure your fork is made **Public** for marking. Answers should be added to the # INSERT ANSWERS HERE # section above in the **README.md** file of your forked repository.
