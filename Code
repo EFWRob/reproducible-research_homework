@@ -1,0 +1,238 @@
+#Script to estimate the model parameters using a linear approximation
+
+library(dplyr)
+
+growth_data <- read.csv("experiment.csv")
+
+#Case 1. K >> N0, t is small
+
+data_subset1 <- growth_data %>% filter(t<1300) %>% mutate(N_log = log(N))
+
+model1 <- lm(N_log ~ t, data_subset1)
+summary(model1)
+#Case 2. N(t) = K
+
+data_subset2 <- growth_data %>% filter(t>2500)
+
+model2 <- lm(N ~ 1, data_subset2)
+summary(model2)
+
+#Script to plot the logistic growth data
+
+growth_data <- read.csv("experiment.csv")
+
+#install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(aes(t,N), data = growth_data) +
+  
+  geom_point() +
+  
+  xlab("t") +
+  
+  ylab("y") +
+  
+  theme_bw()
+
+ggplot(aes(t,N), data = growth_data) +
+  
+  geom_point() +
+  
+  xlab("t") +
+  
+  ylab("y") +
+  
+  scale_y_continuous(trans='log10')
+
+#Script to plot data and model
+
+growth_data <- read.csv("experiment.csv")
+
+logistic_fun <- function(t) {
+  
+  N <- (N0*K*exp(r*t))/(K-N0+N0*exp(r*t))
+  
+  return(N)
+  
+}
+
+N0 <- exp(6.889e+00)
+
+r <- 1.002e-02
+
+K <- 6.00e+10 
+
+ggplot(aes(t,N), data = growth_data) +
+  
+  geom_function(fun=logistic_fun, colour="red") +
+  
+  geom_point() 
+
+# scale_y_continuous(trans='log10')
+
+sink(file = "package-versions.txt")
+sessionInfo()
+sink()
+
+N1 <- N0 * exp(r * 4980)
+N1
+
+#Question 3
+if (!require(ggplot2)) install.packages("ggplot2")
+library(ggplot2)
+
+# Define parameters
+N0 <- exp(6.889)      # Initial population size
+r <- 0.01002          # Growth rate
+K <- 6.00e+10         # Carrying capacity
+time <- seq(0, 5000, by = 10)  # Time vector
+
+# Exponential growth function
+exponential_growth <- function(t) {
+  N0 * exp(r * t)
+}
+
+# Logistic growth function
+logistic_fun <- function(t) {
+  
+  N <- (N0*K*exp(r*t))/(K-N0+N0*exp(r*t))
+  
+  return(N)
+  
+}
+
+# Generate data for plotting
+growth_data <- data.frame(
+  time = time,
+  Exponential = exponential_growth(time),
+  Logistic = logistic_fun(time)
+)
+ggplot() +
+  geom_line(data = growth_data, aes(x = time, y = Exponential, color = "Exponential"), size = 1.2) +
+  geom_line(data = growth_data, aes(x = time, y = Logistic, color = "Logistic"), size = 1.2) +
+  labs(title = "Comparison of Exponential and Logistic Growth",
+       x = "Time", y = "Population") +
+  scale_color_manual(values = c("Exponential" = "coral", "Logistic" = "darkturquoise")) +
+  theme_minimal() + scale_y_log10()
+
+# Save the plot as a PNG image
+ggsave("growth_comparison.png", plot = p, width = 8, height = 6)
+
+# Print plot to console (optional)
+print(p)
+
+
+#Question 4 
+
+#install.packages("ggplot2")
+#install.packages("gridExtra")
+
+library(ggplot2)
+library(gridExtra)
+
+random_walk  <- function (n_steps) {
+  
+  df <- data.frame(x = rep(NA, n_steps), y = rep(NA, n_steps), time = 1:n_steps)
+  
+  df[1,] <- c(0,0,1)
+  
+  for (i in 2:n_steps) {
+    
+    h <- 0.25
+    
+    angle <- runif(1, min = 0, max = 2*pi)
+    
+    df[i,1] <- df[i-1,1] + cos(angle)*h
+    
+    df[i,2] <- df[i-1,2] + sin(angle)*h
+    
+    df[i,3] <- i
+    
+  }
+  
+  return(df)
+  
+}
+set.seed(42)
+data1 <- random_walk(500)
+
+plot1 <- ggplot(aes(x = x, y = y), data = data1) +
+  
+  geom_path(aes(colour = time)) +
+  
+  theme_bw() +
+  
+  xlab("x-coordinate") +
+  
+  ylab("y-coordinate")
+
+set.seed(42)
+data2 <- random_walk(500)
+
+plot2 <- ggplot(aes(x = x, y = y), data = data2) +
+  
+  geom_path(aes(colour = time)) +
+  
+  theme_bw() +
+  
+  xlab("x-coordinate") +
+  
+  ylab("y-coordinate")
+
+grid.arrange(plot1, plot2, ncol=2)
+
+virion_data <- read.csv("Cui_etal2014.csv")
+
+virion_data_log <- virion_data %>%
+  mutate(Log_Genome_length = log(Genome.length..kb.),
+         Log_Virion_volume = log(Virion.volume..nm.nm.nm.))
+
+Virion_plot <- lm(Log_Virion_volume ~ Log_Genome_length, data = virion_data_log)
+
+ggplot(virion_data_log, aes(x = Log_Genome_length, y = Log_Virion_volume)) +
+  geom_point(color = "blue", size = 3) +  # Scatter points
+  geom_smooth(method = "lm", color = "red", se = TRUE) +  # Regression line with confidence interval
+  labs(
+    title = "Log-Log Relationship Between Genome Length and Virion Volume",
+    x = "Log(Genome Length)",
+    y = "Log(Virion Volume)"
+  ) +
+  theme_minimal()
+
+# Fit the linear model
+Virion_plot <- lm(Log_Virion_volume ~  Log_Genome_length, data = virion_data_log)
+
+# Model summary
+summary_model <- summary(Virion_plot)
+summary_model
+# Extract coefficients
+intercept <- coef(Virion_plot)[1]  # ln(α)
+slope <- coef(Virion_plot)[2]      # β
+
+# Convert intercept to α
+alpha <- exp(intercept)
+
+# Extract p-values
+p_values <- summary_model$coefficients[, "Pr(>|t|)"]
+
+# Check statistical significance
+is_significant <- p_values < 0.05
+
+# Print results
+cat("Estimated α (Scaling Factor):", alpha, "\n")
+cat("Estimated β (Exponent):", slope, "\n")
+cat("P-values for Intercept and Slope:", p_values, "\n")
+cat("Are the coefficients statistically significant?", is_significant, "\n")
+
+# Parameters from the model (replace these with your actual values)
+alpha <- 1181.807  # Example scaling factor (replace with calculated value)
+beta <- 1.515228   # Example exponent (replace with calculated value)
+
+# Genome length of 300 kb
+L <- 300000  # Length in nucleotides
+
+# Calculate the volume
+V <- alpha * (L^beta)
+
+# Print the result
+cat("Estimated Volume of a 300 kb dsDNA Virus:", V, "nm³\n")
