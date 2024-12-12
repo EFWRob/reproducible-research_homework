@@ -191,7 +191,7 @@ Virion_plot <- lm(Log_Virion_volume ~ Log_Genome_length, data = virion_data_log)
 
 ggplot(virion_data_log, aes(x = Log_Genome_length, y = Log_Virion_volume)) +
   geom_point(color = "blue", size = 3) +  # Scatter points
-  geom_smooth(method = "lm", color = "red", se = TRUE) +  # Regression line with confidence interval
+  geom_smooth(method = "lm", color = "red", se = TRUE) +  
   labs(
     title = "Log-Log Relationship Between Genome Length and Virion Volume",
     x = "Log(Genome Length)",
@@ -224,12 +224,12 @@ cat("Estimated β (Exponent):", slope, "\n")
 cat("P-values for Intercept and Slope:", p_values, "\n")
 cat("Are the coefficients statistically significant?", is_significant, "\n")
 
-# Parameters from the model (replace these with your actual values)
-alpha <- 1181.807  # Example scaling factor (replace with calculated value)
-beta <- 1.515228   # Example exponent (replace with calculated value)
+# Parameters from the model
+alpha <- 1181.807 
+beta <- 1.515228   
 
 # Genome length of 300 kb
-L <- 300000  # Length in nucleotides
+L <- 300000  
 
 # Calculate the volume
 V <- alpha * (L^beta)
