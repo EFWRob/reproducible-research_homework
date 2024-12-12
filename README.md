@@ -6,10 +6,46 @@ Both walks start in the same initial location, but instantly diverge and cover m
 Question 4b.
 A random seed is an initial value (any random number) that algorithms use to produce sequences of seemingly random numbers. These PSNG (pseudorandom number generators) algorithms produce the same string of numbers corresponding to each seed number. This is the result of trying to model randomness using deterministic machines (computers), but also ensures reproducibility as the same algorithm with the same seed will always produce the same randomness. 
 
-4d
+Question 4d
 <img width="468" alt="Code_Changes" src="https://github.com/user-attachments/assets/9d5155fb-8814-4efc-9067-f7f088a51827" />
 
-5a
+Question 5a
+33 rows and 13 collumns
+
+Question 5b
+A log transform using the following code:
+virion_data <- read.csv("Cui_etal2014.csv") 
+virion_data_log <- virion_data %>%
+  mutate(Log_Genome_length = log(Genome.length..kb.),
+         Log_Virion_volume = log(Virion.volume..nm.nm.nm.))
+
+Question 5c
+Estimated α (Scaling Factor): 1181.807 , P value: 2.279645e-10
+Estimated β (Exponent): 1.515228, P value: 6.438498e-10 
+These are the same (accounting for the paper rounding) as the 2014 paper.
+
+Question 5d
+
+virion_data <- read.csv("Cui_etal2014.csv")
+
+virion_data_log <- virion_data %>%
+  mutate(Log_Genome_length = log(Genome.length..kb.),
+         Log_Virion_volume = log(Virion.volume..nm.nm.nm.))
+
+Virion_plot <- lm(Log_Virion_volume ~ Log_Genome_length, data = virus_data_log)
+
+ggplot(virion_data_log, aes(x = Log_Genome_length, y = Log_Virion_volume)) +
+  geom_point(color = "blue", size = 3) +  # Scatter points
+  geom_smooth(method = "lm", color = "red", se = TRUE) +  # Regression line with confidence interval
+  labs(
+    title = "Log-Log Relationship Between Genome Length and Virion Volume",
+    x = "Log(Genome Length)",
+    y = "Log(Virion Volume)"
+  ) +
+  theme_minimal()
+
+Question 5e
+235306564197 nm³
 
 ## Instructions
 
